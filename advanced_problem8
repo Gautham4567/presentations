@@ -1,0 +1,95 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from coeffs import *
+
+p = np.sqrt(3)
+q = 1
+k = 1
+
+P1 = np.arcsin(p / (2 * k))
+Q1 = np.arcsin(q / (2 * k))
+
+R1 = np.pi - (P1 + Q1)
+r1 = 2 * k * np.sin(R1)
+
+RS1 = np.sqrt((r1 / 2) * (r1 / 2) + q * q - r1 * q * np.cos(P1))
+
+# Option A
+if R1 == np.pi / 2:
+    P2 = np.pi - P1
+    Q2 = Q1
+    R2 = np.pi - (P2 + Q2)
+    r2 = 2 * k * np.sin(R2)
+    RS2 = np.sqrt((r2 / 2) * (r2 / 2) + q * q - r2 * q * np.cos(P2))
+
+    P = P2
+    Q = Q2
+    R = R2
+    r = r2
+    RS = RS2
+    print("RS = ", RS)
+
+else:
+    RS = RS1
+    P = P1
+    Q = Q1
+    R = R1
+    r = r1
+    print("RS = ", RS)
+# Option A is correct
+
+# Option B
+area = (1 / 12) * 0.5 * p * q * np.sin(R)
+print("ar(\N{GREEK CAPITAL LETTER DELTA}SOE) = ", area)
+# Option B is incorrect
+
+# Option C
+PE = q * np.sin(R)
+OE = PE / 3
+print("OE = ", OE)
+# Option C is correct
+
+# Option D
+c = (p / 2) * np.tan(Q / 2)
+print("Inradius = ", c)
+# Option D is correct
+
+# plotting
+x_E = np.array([0, 0])
+x_R = np.array([p / 2, 0])
+x_Q = np.array([-p / 2, 0])
+x_P = np.array([0, q * np.sin(R)])
+x_S = (x_P + x_Q) * 0.5
+x_I = np.array([0, c])
+
+x_PQ = line_gen(x_P, x_Q)
+x_QR = line_gen(x_Q, x_R)
+x_RP = line_gen(x_R, x_P)
+x_PE = line_gen(x_P, x_E)
+x_RS = line_gen(x_R, x_S)
+
+plt.plot(x_P[0], x_P[1], 'o')
+plt.text(x_P[0] * (1 + 0.1), x_P[1] * (1 + 0.2), 'P')
+plt.plot(x_Q[0], x_Q[1], 'o')
+plt.text(x_Q[0] * (1 + 0.1), x_Q[1] * (1 - 0.1), 'Q')
+plt.plot(x_R[0], x_R[1], 'o')
+plt.text(x_R[0] * (1 + 0.1), x_R[1] * (1 - 0.1), 'R')
+plt.plot(x_E[0], x_E[1], 'o')
+plt.text(x_E[0] * (1 - 0.2), x_E[1] * (1 - 0.1), 'E')
+plt.plot(x_I[0], x_I[1], 'o')
+plt.text(x_I[0] * (1 - 0.2), x_I[1] * (1 - 0.1), 'I')
+plt.plot(x_S[0], x_S[1], 'o')
+plt.text(x_S[0] * (1 - 0.1), x_S[1] * (1 - 0.1), 'S')
+
+plt.plot(x_PQ[0, :], x_PQ[1, :], label='$PQ$')
+plt.plot(x_QR[0, :], x_QR[1, :], label='$QR$')
+plt.plot(x_RP[0, :], x_RP[1, :], label='$RP$')
+plt.plot(x_PE[0, :], x_PE[1, :], label='$PE$')
+plt.plot(x_RS[0, :], x_RS[1, :], label='$RS$')
+
+plt.axis('equal')
+plt.xlabel('$x$')
+plt.ylabel('$y$')
+plt.legend(loc='best')
+plt.grid()
+plt.show()
